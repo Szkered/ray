@@ -134,7 +134,9 @@ class ModelCatalog(object):
                 child_distributions=child_dist,
                 action_space=action_space,
                 input_lens=input_lens), sum(input_lens)
-        elif isinstance(action_space, Simplex):
+        elif isinstance(
+                action_space,
+                Simplex) or action_space.__class__.__name__ == "Simplex":
             return Dirichlet, action_space.shape[0]
         raise NotImplementedError("Unsupported args: {} {}".format(
             action_space, dist_type))
@@ -168,7 +170,9 @@ class ModelCatalog(object):
                 tf.int64 if all_discrete else tf.float32,
                 shape=(None, size),
                 name="action")
-        elif isinstance(action_space, Simplex):
+        elif isinstance(
+                action_space,
+                Simplex) or action_space.__class__.__name__ == "Simplex":
             return tf.placeholder(
                 tf.float32, shape=(None, action_space.shape[0]), name="action")
         else:

@@ -242,7 +242,9 @@ class Dirichlet(ActionDistribution):
     e.g. actions that represent resource allocation."""
 
     def __init__(self, inputs):
-        self.dist = tf.distributions.Dirichlet(concentration=inputs)
+        lower_bound = 0.1
+        concentration = lower_bound + (1 - lower_bound) * tf.nn.softplus(inputs)
+        self.dist = tf.distributions.Dirichlet(concentration=concentration)
         ActionDistribution.__init__(self, inputs)
 
     @override(ActionDistribution)
